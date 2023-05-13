@@ -21,7 +21,7 @@ docker build --rm -t local/cypht image/.
 Refer `image/docker-compose.yml` and launch using the following
 
 ```
-docker-compose --project-directory image up -d
+docker-compose up -d
 ```
 
 * Starts a database container to be for user authentication
