@@ -1,53 +1,36 @@
 ## Cypht
 
-This is the official docker image of [Cypht](https://cypht.org/).
+This is [cypht-docker](https://github.com/jasonmunro/cypht-docker), the official docker image of [Cypht](https://cypht.org/)
 
 ### Features of this image
 
 * Alpine linux based image that is less than 50MB
-* Bundled nginx and PHP 7.1 provides everything in one image
+* Bundled nginx and PHP 7.4 provides everything in one image
 * Performs same install steps as found on [Cypht install page](https://cypht.org/install.html)
 * All Cypht mods and configuration options can be set via environment variables
 * Automatic database setup (if configured to use database)
 
+### Building image locally
+
+```
+docker build --rm -t local/cypht image/.
+```
+
 ### Example docker-compose
 
+Refer `image/docker-compose.yml` and launch using the following
+
+```
+docker-compose --project-directory image up -d
+```
+
 * Starts a database container to be for user authentication
-* Starts the Cypht container available on port 80 of the host with ...
-  * A local volume declared for persisting user settings across container reboots.
+* Starts the Cypht container available on port 8090 of the host with ...
+  * Local volumes declared for persisting database and user settings across container reboots.
   * An initial user account for authentication
   * Environment variables for accessing the database container
 
 *NOTE: Please change usernames and passwords before using this docker-compose in your environment*
-
-```
-version: '3'
-services:
-  db:
-    image: mariadb:10
-    volumes:
-      - ./db:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=root_password
-      - MYSQL_DATABASE=cypht
-      - MYSQL_USER=cypht
-      - MYSQL_PASSWORD=cypht_password
-  cypht:
-    image: sailfrog/cypht-docker:latest
-    volumes:
-      - ./cypht/users:/var/lib/hm3/users
-    ports:
-      - "80:80"
-    environment:
-      - CYPHT_AUTH_USERNAME=admin
-      - CYPHT_AUTH_PASSWORD=admin_password
-      - CYPHT_DB_CONNECTION_TYPE=host
-      - CYPHT_DB_HOST=db
-      - CYPHT_DB_NAME=cypht
-      - CYPHT_DB_USER=cypht
-      - CYPHT_DB_PASS=cypht_password
-      - CYPHT_SESSION_TYPE=DB
-```
 
 ### Environment variables
 
