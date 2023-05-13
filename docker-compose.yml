@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  db:
+    image: mariadb:10
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=cypht
+      - MYSQL_USER=cypht
+      - MYSQL_PASSWORD=cypht_password
+    volumes:
+      - cypht-db:/var/lib/mysql
+  cypht:
+    image: local/cypht
+    ports:
+      - "8090:80"
+    depends_on:
+      - db
+    environment:
+      - CYPHT_AUTH_USERNAME=admin
+      - CYPHT_AUTH_PASSWORD=admin_password
+      - CYPHT_DB_CONNECTION_TYPE=host
+      - CYPHT_DB_HOST=db
+      - CYPHT_DB_NAME=cypht
+      - CYPHT_DB_USER=cypht
+      - CYPHT_DB_PASS=cypht_password
+      - CYPHT_SESSION_TYPE=DB
+    volumes:
+      - cypht-users:/var/lib/hm3/users
+
+volumes:
+    cypht-db:
+        external: false
+    cypht-users:
+        external: false
